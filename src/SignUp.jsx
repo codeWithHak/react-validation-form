@@ -7,8 +7,12 @@ function SignUp() {
     const [name,setName] = useState();
     const [email,setEmail] = useState(false);
     const [password,setPassword] = useState();
-    const [emailError, setEmailError] = useState(false)
     const [nameError, setNameError] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const emailRegx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    const characters = "@!%$^&*"
+    const numbers = /0123456789/;
 
     const handleName = (e) =>{
     let name = e.target.value
@@ -20,6 +24,30 @@ function SignUp() {
   }
 }
 
+const handleEmail = (e) =>{
+let email = e.target.value;
+if (!email.match(emailRegx)){
+    setEmailError(true)
+}
+else{
+    setEmailError(false)
+}
+}
+
+const handlePassword = (e) =>{
+    let password = e.target.value;
+    if(password.length<6){
+        setPasswordError(true)
+    }
+    else{
+        setPasswordError(false)
+    }
+}
+
+const handleSubmit = (e)=>{
+e.preventDefault()
+console.log(e.target[0].value + " " + e.target[1].value + " " + e.target[2].value)
+}
   return (
   <div>
 <section className=" flex bg-gradient-to-r from-[#005ae6] to-cyan-600 min-h-screen justify-center items-center">
@@ -41,16 +69,21 @@ function SignUp() {
              type="email"
              name="email"
              placeholder="Email"
+             onChange={handleEmail}
             />
+            {emailError ? <span className="text-red-700 text-lg">Invalid Email</span>:""}
 
        <input className="p-2 rounded-sm text-black"
               type="password"
               name="passowrd"
               placeholder="Passowrd"
               value={password}
+              onChange={handlePassword}
+              />
+              {passwordError ? <span className="text-red-700 text-lg">Password length must be greater than 6 characters</span>:""}
 
-               />
-              <button className="bg-[#005ae6] rounded-xl py-2 text-white hover:scale-105 duration-300">Sign Up</button> 
+            
+              <button className="bg-[#005ae6] rounded-xl py-2 text-white hover:scale-105 duration-300" onSubmit={handleSubmit} type="submit">Sign Up</button> 
     </form>
 
     <div className="mt-7 grid grid-cols-3 items-center text-gray-200">
